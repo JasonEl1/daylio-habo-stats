@@ -20,8 +20,5 @@ Note: The format of Habo's output .json changed sometime in August / September 2
 
 ### Samples
 
-Scatter Plot:
 ![Scatter Plot](samples/scatter.png)
-
-Line Plot:
 ![Line Plot](samples/line.png)
