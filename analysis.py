@@ -1,3 +1,5 @@
+# VERSION = 0.1
+
 import habo
 import daylio
 from datetime import datetime,timedelta

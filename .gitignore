@@ -3,4 +3,5 @@
 venv/
 __pycache__/
 *.html
-*.txt
+todo.txt
+.DS_Store
