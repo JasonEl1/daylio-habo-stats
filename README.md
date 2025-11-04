@@ -11,7 +11,7 @@ Put Daylio and Habo export files in this directory named daylio.csv and habo.jso
 
 `line.py` and `scatter.py` use these files to generate plots:
 
-`line.py` generates a line graph of Habo habit completion (%) and Daylio mood over time.
+`line.py` generates a line graph of Habo habit completion (%) and Daylio mood over time with a rolling average.
 `scatter.py` generates a scatter plot of Habo habit completion (%) vs Daylio mood
 
 > [!NOTE]
