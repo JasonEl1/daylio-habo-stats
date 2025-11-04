@@ -1,21 +1,44 @@
-# VERSION = 0.1
+#v0.2
 
+import os
 import csv
 
-DAYLIO_FILENAME="daylio.csv"
+def get_filename():
+    current_dir = os.getcwd()
+    possible_filenames=[]
+
+    for entry in os.listdir(current_dir):
+        if os.path.isfile(os.path.join(current_dir, entry)):
+            if entry.endswith(".csv"):
+                possible_filenames.append(entry)
+
+    if(len(possible_filenames)==1):
+        return possible_filenames[0]
+    else:
+        print("Multiple Daylio files found:")
+        for i in range(len(possible_filenames)):
+            print(f"[{i}]:{possible_filenames[i]}")
+        while(True):
+            try:
+                choice = int(input("Select a Daylio file: "))
+                break
+            except ValueError:
+                print("Invalid input, try again.")
+
+        return possible_filenames[choice]
 
 DAYLIO_MOOD_TO_INT={"awful":1,"bad":2,"meh":3,"good":4,"rad":5}
 DAYLIO_MOOD_COLOURS = ["red", "orange","gold","limegreen","mediumseagreen"]
 
-def get_mood_for_date(date):
-    with open(DAYLIO_FILENAME, 'r') as file:
+def get_mood_for_date(date,filename):
+    with open(filename, 'r') as file:
         reader = csv.reader(file)
         for row in reader:
             if row[0]==date:
                 return DAYLIO_MOOD_TO_INT[row[4]]
 
-def get_first_last_dates():
-    with open(DAYLIO_FILENAME, 'r') as file:
+def get_first_last_dates(filename):
+    with open(filename, 'r') as file:
         reader = csv.reader(file)
         last_date=""
         first_date=""

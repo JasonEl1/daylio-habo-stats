@@ -1,9 +1,12 @@
-# VERSION = 0.1
+#v0.2
 
 import analysis
 import habo
 import daylio
 from datetime import datetime,timedelta
+
+HABO_FILENAME=habo.get_filename()
+DAYLIO_FILENAME=daylio.get_filename()
 
 print("Analyzing data...")
 
@@ -11,9 +14,9 @@ data_x=[]
 data_y=[]
 
 date=datetime.strptime("2024-10-01", "%Y-%m-%d")
-for i in range(analysis.get_total_days()):
-    data_x.append(daylio.get_mood_for_date(date.strftime("%Y-%m-%d")))
-    data_y.append(habo.get_completion_for_day(date.strftime("%Y-%m-%d")))
+for i in range(analysis.get_total_days(HABO_FILENAME,DAYLIO_FILENAME)):
+    data_x.append(daylio.get_mood_for_date(date.strftime("%Y-%m-%d"),DAYLIO_FILENAME))
+    data_y.append(habo.get_completion_for_day(date.strftime("%Y-%m-%d"),HABO_FILENAME))
     date+=timedelta(days=1)
 
 print("Generating scatter plot...")
