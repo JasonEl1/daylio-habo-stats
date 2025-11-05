@@ -1,4 +1,4 @@
-#v0.2
+#v0.3
 
 import analysis
 import habo
@@ -31,7 +31,7 @@ y_habo=[]
 date=datetime.strptime(start_date, "%Y-%m-%d")
 for i in range(analysis.get_total_days(HABO_FILENAME,DAYLIO_FILENAME)):
     y_daylio.append(daylio.get_mood_for_date(date.strftime("%Y-%m-%d"),DAYLIO_FILENAME))
-    y_habo.append(5*(habo.get_completion_for_day(date.strftime("%Y-%m-%d"),HABO_FILENAME)))
+    y_habo.append(habo.get_completion_for_day(date.strftime("%Y-%m-%d"),HABO_FILENAME))
     date+=timedelta(days=1)
 
 print("Generating line plot...")
@@ -43,10 +43,16 @@ rolling_average(y_daylio)
 rolling_average(y_habo)
 x = np.arange(0, len(y_daylio), 1)
 
-plt.plot(x,y_daylio,label="Daylio")
-plt.plot(x,y_habo,label="Habo")
-plt.legend()
-plt.xticks([x[50],x[len(x)-10]],labels=["2024-11-04", "2025-11-04"])
-plt.xlabel("Date")
-plt.ylabel("Mood / Habit Completion")
+fig,daylio_axis=plt.subplots()
+daylio_line = daylio_axis.plot(x,y_daylio,label="Daylio",color="blue")
+daylio_axis.set_ylabel("Mood")
+daylio_axis.set_xticks([x[50],x[len(x)-10]],labels=["2024-11-04", "2025-11-04"]) #needs update
+daylio_axis.set_xlabel("Date")
+
+habo_axis = daylio_axis.twinx()
+habo_line = habo_axis.plot(x,y_habo,label="Habo",color="orange")
+habo_axis.set_ylabel("Habit Completion")
+
+fig.legend(bbox_to_anchor=(.6,.3),draggable=True)
+print("Done")
 plt.show()
