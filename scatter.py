@@ -1,4 +1,4 @@
-#v0.3
+#v0.3.1
 
 import analysis
 import habo
@@ -8,11 +8,13 @@ import sys
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 import numpy as np
+from tqdm import tqdm
 
 HABO_FILENAME=habo.get_filename()
 DAYLIO_FILENAME=daylio.get_filename()
 
 print("Analyzing data...")
+start_time=datetime.now()
 
 start_end_dates=analysis.get_start_end_days(HABO_FILENAME,DAYLIO_FILENAME)
 
@@ -50,7 +52,7 @@ else:
 data_x=[]
 data_y=[]
 
-for i in range(num_days):
+for i in tqdm(range(num_days)):
     data_x.append(daylio.get_mood_for_date(date.strftime("%Y-%m-%d"),DAYLIO_FILENAME))
     data_y.append(habo.get_completion_for_day(date.strftime("%Y-%m-%d"),HABO_FILENAME))
     date+=timedelta(days=1)
@@ -60,9 +62,6 @@ print("Generating scatter plot...")
 daylio_cmap = ListedColormap(daylio.DAYLIO_MOOD_COLOURS)
 
 m,b=np.polyfit(data_x,data_y,1)
-print(m)
-print(b)
-print(data_x[0])
 x=np.array([1,2,3,4,5])
 
 plt.scatter(data_x, data_y,c=data_x,cmap=daylio_cmap)
@@ -73,5 +72,6 @@ plt.yticks([0.0,0.2,0.4,0.6,0.8,1.0])
 plt.xlabel("Mood")
 plt.ylabel("Habit Completion")
 
-print("Done")
+end_time=datetime.now()
+print(f"Done in {round((end_time-start_time).total_seconds(),2)} seconds")
 plt.show()

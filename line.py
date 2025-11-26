@@ -1,4 +1,4 @@
-#v0.4
+#v0.4.1
 
 import analysis
 import habo
@@ -8,6 +8,7 @@ import numpy as np
 import math
 import sys
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 HABO_FILENAME=habo.get_filename()
 DAYLIO_FILENAME=daylio.get_filename()
@@ -22,6 +23,7 @@ def rolling_average(list):
     list[:]=newlist
 
 print("Analyzing data...")
+start_time=datetime.now()
 
 start_end_dates=analysis.get_start_end_days(HABO_FILENAME,DAYLIO_FILENAME)
 
@@ -59,7 +61,7 @@ else:
 y_daylio=[]
 y_habo=[]
 
-for i in range(num_days):
+for i in tqdm(range(num_days)):
     y_daylio.append(daylio.get_mood_for_date(date.strftime("%Y-%m-%d"),DAYLIO_FILENAME))
     y_habo.append(habo.get_completion_for_day(date.strftime("%Y-%m-%d"),HABO_FILENAME))
     date+=timedelta(days=1)
@@ -82,5 +84,7 @@ habo_line = habo_axis.plot(x,y_habo,label="Habo",color="orange")
 habo_axis.set_ylabel("Habit Completion")
 
 fig.legend(bbox_to_anchor=(.6,.3),draggable=True)
-print("Done")
+
+end_time=datetime.now()
+print(f"Done in {round((end_time-start_time).total_seconds(),2)} seconds")
 plt.show()
