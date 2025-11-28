@@ -1,4 +1,4 @@
-#v0.2
+# daylio.py v0.2.1
 
 import os
 import csv
@@ -35,7 +35,11 @@ def get_mood_for_date(date,filename):
         reader = csv.reader(file)
         for row in reader:
             if row[0]==date:
-                return DAYLIO_MOOD_TO_INT[row[4]]
+                result=int(DAYLIO_MOOD_TO_INT[row[4]])
+                file.close()
+                return result
+        file.close()
+        return -1
 
 def get_first_last_dates(filename):
     with open(filename, 'r') as file:

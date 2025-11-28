@@ -1,4 +1,4 @@
-#v0.3.1
+# scatter.py v0.3.1
 
 import analysis
 import habo
