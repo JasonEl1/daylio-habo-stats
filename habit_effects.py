@@ -1,4 +1,4 @@
-# habit_effects.py v0.1
+# habit_effects.py v0.2.0
 
 import habo
 import daylio
@@ -49,7 +49,7 @@ else:
     num_days=analysis.get_total_days(HABO_FILENAME,DAYLIO_FILENAME)
 
 
-
+daylio_data=daylio.load_data(DAYLIO_FILENAME)
 data={}
 
 for habit_id in habo.get_habit_ids(HABO_FILENAME):
@@ -58,8 +58,8 @@ for habit_id in habo.get_habit_ids(HABO_FILENAME):
     num_completed=0
     failed_total=0
     num_failed=0
-    for i in tqdm(range(num_days)):
-        mood=int(daylio.get_mood_for_date(date.strftime("%Y-%m-%d"),DAYLIO_FILENAME))
+    for _ in tqdm(range(num_days)):
+        mood=daylio.get_mood_for_date_preloaded(date.strftime("%Y-%m-%d"),daylio_data)
         if(habo.get_habit_for_day(date,HABO_FILENAME,habit_id)):
             completed_total+=mood
             num_completed+=1
@@ -76,6 +76,9 @@ for habit_id in habo.get_habit_ids(HABO_FILENAME):
         num_failed=1
     data[habit_id]=[round((completed_total/num_completed),2),round((failed_total/num_failed),2)]
 
+end_time=datetime.now()
+print()
+print(f"Done in {round((end_time-start_time).total_seconds(),2)} seconds")
 print("\nResults:")
 print("--------")
 
@@ -99,6 +102,7 @@ for habit_id in data_ids:
     completed_results.append(data[habit_id][0])
     failed_results.append(data[habit_id][1])
     habit_names.append(habo.get_habit_name_from_id(HABO_FILENAME,habit_id))
+
 print("\nGenerating plot...")
 
 bar_positions = np.arange(len(data_ids))

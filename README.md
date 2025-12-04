@@ -34,3 +34,5 @@ Line Plot
 Habit Effect Plot
 
 ![Habit Effect Plot](samples/habit_effect.png)
+
+*(habit numbers guide also output by program)

@@ -1,7 +1,8 @@
-# daylio.py v0.2.1
+# daylio.py v0.3.0
 
 import os
 import csv
+import pandas as pd
 
 def get_filename():
     current_dir = os.getcwd()
@@ -30,6 +31,10 @@ def get_filename():
 DAYLIO_MOOD_TO_INT={"awful":1,"bad":2,"meh":3,"good":4,"rad":5}
 DAYLIO_MOOD_COLOURS = ["red", "orange","gold","limegreen","mediumseagreen"]
 
+def load_data(filename):
+    return pd.read_csv(filename)
+
+
 def get_mood_for_date(date,filename):
     with open(filename, 'r') as file:
         reader = csv.reader(file)
@@ -40,6 +45,9 @@ def get_mood_for_date(date,filename):
                 return result
         file.close()
         return -1
+
+def get_mood_for_date_preloaded(date,data):
+    return int(DAYLIO_MOOD_TO_INT[data[data["full_date"]==date]["mood"].iloc[0]])
 
 def get_first_last_dates(filename):
     with open(filename, 'r') as file:

@@ -1,4 +1,4 @@
-#line.py v0.4.1
+#line.py v0.5.0
 
 import analysis
 import habo
@@ -9,6 +9,7 @@ import math
 import sys
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+import pandas as pd
 
 HABO_FILENAME=habo.get_filename()
 DAYLIO_FILENAME=daylio.get_filename()
@@ -61,8 +62,10 @@ else:
 y_daylio=[]
 y_habo=[]
 
-for i in tqdm(range(num_days)):
-    y_daylio.append(daylio.get_mood_for_date(date.strftime("%Y-%m-%d"),DAYLIO_FILENAME))
+daylio_data=daylio.load_data(DAYLIO_FILENAME)
+
+for _ in tqdm(range(num_days)):
+    y_daylio.append(daylio.get_mood_for_date_preloaded(date.strftime("%Y-%m-%d"),daylio_data))
     y_habo.append(habo.get_completion_for_day(date.strftime("%Y-%m-%d"),HABO_FILENAME))
     date+=timedelta(days=1)
 
