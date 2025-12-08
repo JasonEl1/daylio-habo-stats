@@ -54,7 +54,7 @@ data_y=[]
 
 daylio_data=daylio.load_data(DAYLIO_FILENAME)
 
-for i in tqdm(range(num_days)):
+for _ in tqdm(range(num_days)):
     data_x.append(daylio.get_mood_for_date_preloaded(date.strftime("%Y-%m-%d"),daylio_data))
     data_y.append(habo.get_completion_for_day(date.strftime("%Y-%m-%d"),HABO_FILENAME))
     date+=timedelta(days=1)

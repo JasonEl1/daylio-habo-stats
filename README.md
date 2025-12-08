@@ -9,7 +9,9 @@ Put Daylio and Habo export files in this directory named daylio.csv and habo.jso
 `daylio.py` and `habo.py` are general use scripts containing helpful functions for working with the output files.
 
 
-`line.py` generates a line graph of Habo habit completion (%) and Daylio mood over time with a rolling average.
+`line.py` generates a line graph of Habo habit completion (%) and Daylio mood over time with a rolling average. The `--habo` or `--daylio` options can optionally be used (after optional date arguments) to only display the Habo completion plot or the Daylio  plot.
+Example: `python3 line.py 2024-01-01 2024-12-31 --daylio`.
+
 `scatter.py` generates a scatter plot of Habo habit completion (%) vs Daylio mood
 
 `habit_effects.py` generates statistics of the effects of each Habo habit on Daylio mood as well as a bar graph

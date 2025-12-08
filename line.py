@@ -1,4 +1,4 @@
-#line.py v0.5.0
+#line.py v0.5.1
 
 import analysis
 import habo
@@ -28,7 +28,15 @@ start_time=datetime.now()
 
 start_end_dates=analysis.get_start_end_days(HABO_FILENAME,DAYLIO_FILENAME)
 
-if(len(sys.argv)==3 and len(sys.argv[1])==len(sys.argv[2]) and len(sys.argv[1])==10): #if correctly passed start, end dates
+plot_daylio=True
+plot_habo=True
+
+if "--daylio" in sys.argv and not "--habo" in sys.argv:
+    plot_habo=False
+elif "--habo" in sys.argv and not "--daylio" in sys.argv:
+    plot_daylio=False
+
+if(len(sys.argv)>=3 and len(sys.argv[1])==len(sys.argv[2]) and len(sys.argv[1])==10): #if correctly passed start, end dates
     try:
         start_date=sys.argv[1]
         date=datetime.strptime(start_date,"%Y-%m-%d")
@@ -77,16 +85,24 @@ rolling_average(y_habo)
 x = np.arange(0, len(y_daylio), 1)
 
 fig,daylio_axis=plt.subplots()
-daylio_line = daylio_axis.plot(x,y_daylio,label="Daylio",color="blue")
-daylio_axis.set_ylabel("Mood")
 daylio_axis.set_xticks([x[0],x[len(x)-1]],labels=[start_date,end_date])
 daylio_axis.set_xlabel("Date")
 
-habo_axis = daylio_axis.twinx()
-habo_line = habo_axis.plot(x,y_habo,label="Habo",color="orange")
-habo_axis.set_ylabel("Habit Completion")
+if(plot_daylio):
+    daylio_line = daylio_axis.plot(x,y_daylio,label="Daylio",color="blue")
+    daylio_axis.set_ylabel("Mood")
 
-fig.legend(bbox_to_anchor=(.6,.3),draggable=True)
+if(plot_habo):
+    if(plot_daylio):
+        habo_axis = daylio_axis.twinx()
+        habo_line = habo_axis.plot(x,y_habo,label="Habo",color="orange")
+        habo_axis.set_ylabel("Habit Completion")
+    else:
+        habo_line = daylio_axis.plot(x,y_habo,label="Habo",color="orange")
+        daylio_axis.set_ylabel("Habit Completion")
+
+if(plot_habo and plot_daylio):
+    fig.legend(bbox_to_anchor=(.6,.3),draggable=True)
 
 end_time=datetime.now()
 print(f"Done in {round((end_time-start_time).total_seconds(),2)} seconds")
