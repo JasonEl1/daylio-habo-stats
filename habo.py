@@ -1,4 +1,4 @@
-# habo.py v0.2.1
+# habo.py v0.2.2
 
 import os
 import json
@@ -45,7 +45,7 @@ def get_first_last_dates(filename):
             first_dates.append(next(iter(habit['events'])))
             last_dates.append(list(habit["events"].keys())[-1])
 
-    return [max(first_dates).split(" ")[0],min(last_dates).split(" ")[0]]
+    return [min(first_dates).split(" ")[0],max(last_dates).split(" ")[0]]
 
 def get_habit_name_from_id(filename,habit_id):
     with open(filename, 'r') as file:
