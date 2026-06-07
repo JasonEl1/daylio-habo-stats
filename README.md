@@ -15,6 +15,8 @@ Example: `python3 line.py 2024-01-01 2024-12-31 --daylio`.
 
 `habit_effects.py` generates statistics of the effects of each Habo habit on Daylio mood as well as a bar graph
 
+`indv_habit.py` generates a line plot of habit completion over a rolling average window for a single habit
+
 `mood_cloud.py` generates a word cloud for each Daylio mood
 
 > [!NOTE]

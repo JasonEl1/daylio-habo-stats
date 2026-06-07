@@ -1,4 +1,4 @@
-#v0.2
+# analysis.py v0.3
 
 import habo
 import daylio
@@ -14,3 +14,13 @@ def get_total_days(habo_filename,daylio_filename):
     end_date = datetime.strptime(get_start_end_days(habo_filename,daylio_filename)[1], "%Y-%m-%d")
 
     return ((end_date-start_date).days)+1
+
+def rolling_average(list):
+    import math
+    CHUNK_SIZE=math.ceil(len(list)/50)
+
+    newlist=[]
+    for i in range(0,len(list),CHUNK_SIZE):
+        newlist.append(sum(list[i:i+CHUNK_SIZE])/len(list[i:i+CHUNK_SIZE]))
+
+    list[:]=newlist

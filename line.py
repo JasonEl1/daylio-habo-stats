@@ -1,4 +1,4 @@
-#line.py v0.5.1
+# line.py v0.6.0
 
 import analysis
 import habo
@@ -13,15 +13,6 @@ import pandas as pd
 
 HABO_FILENAME=habo.get_filename()
 DAYLIO_FILENAME=daylio.get_filename()
-
-def rolling_average(list):
-    CHUNK_SIZE=math.ceil(len(list)/50)
-
-    newlist=[]
-    for i in range(0,len(list),CHUNK_SIZE):
-        newlist.append(sum(list[i:i+CHUNK_SIZE])/len(list[i:i+CHUNK_SIZE]))
-
-    list[:]=newlist
 
 print("Analyzing data...")
 start_time=datetime.now()
@@ -80,8 +71,8 @@ for _ in tqdm(range(num_days)):
 print("Generating line plot...")
 
 assert(len(y_daylio)!=0 and len(y_habo)!=0)
-rolling_average(y_daylio)
-rolling_average(y_habo)
+analysis.rolling_average(y_daylio)
+analysis.rolling_average(y_habo)
 x = np.arange(0, len(y_daylio), 1)
 
 fig,daylio_axis=plt.subplots()
