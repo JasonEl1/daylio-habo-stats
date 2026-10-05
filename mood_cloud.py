@@ -22,7 +22,7 @@ nlp = spacy.load("en_core_web_sm")
 allowed_tags = ["ADJ"]
 
 while(date != end_date):
-    print(date)
+    print(f"Analyzing {str(date).split(" ")[0]}")
     mood = daylio.get_mood_for_date_preloaded(date.strftime("%Y-%m-%d"),data)
     note = daylio.get_note_for_date_preloaded(date.strftime("%Y-%m-%d"),data)
     doc = nlp(note)

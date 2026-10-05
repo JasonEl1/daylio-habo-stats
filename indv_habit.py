@@ -1,4 +1,4 @@
-# indv_habit.py v0.0.1
+# indv_habit.py v0.0.2
 
 import habo
 from datetime import datetime, timedelta
@@ -50,6 +50,7 @@ x = np.arange(0, len(y_data), 1)
 plt.plot(x, y_data)
 plt.title(f"Habit completion - {habo.get_habit_name_from_id(HABO_FILENAME,int(chosen_habit_id))}")
 plt.xticks([x[0],x[len(x)-1]],labels=[start_end_dates[0],start_end_dates[1]])
+plt.xticks([x[0],x[int(len(x)/2)],x[-1]],labels=[start_end_dates[0],(datetime.strptime(start_end_dates[0], "%Y-%m-%d")+timedelta(days=int(num_days/2))).strftime("%Y-%m-%d"),start_end_dates[1]])
 plt.xlabel("Date")
 plt.ylabel("Habit completion (rolling avg.)")
 

@@ -12,7 +12,6 @@ import numpy as np
 HABO_FILENAME=habo.get_filename()
 DAYLIO_FILENAME=daylio.get_filename()
 
-print("Analyzing data...")
 start_time=datetime.now()
 
 start_end_dates = analysis.get_start_end_days(HABO_FILENAME,DAYLIO_FILENAME)
@@ -51,6 +50,8 @@ else:
 
 daylio_data=daylio.load_data(DAYLIO_FILENAME)
 data={}
+
+print(f"Analyzing {len(habo.get_habit_ids(HABO_FILENAME))} habits from {start_date} to {end_date}...")
 
 for habit_id in habo.get_habit_ids(HABO_FILENAME):
     date=datetime.strptime(start_date, "%Y-%m-%d")

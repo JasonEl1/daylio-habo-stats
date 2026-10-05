@@ -1,4 +1,4 @@
-# daylio.py v0.3.1
+# daylio.py v0.3.2
 
 import os
 import csv
@@ -22,6 +22,8 @@ def get_filename():
         while(True):
             try:
                 choice = int(input("Select a Daylio file: "))
+                if(choice>len(possible_filenames)-1):
+                    raise ValueError
                 break
             except ValueError:
                 print("Invalid input, try again.")
@@ -34,7 +36,6 @@ DAYLIO_MOOD_COLOURS = ["red", "orange","gold","limegreen","mediumseagreen"]
 
 def load_data(filename):
     return pd.read_csv(filename)
-
 
 def get_mood_for_date(date,filename):
     with open(filename, 'r') as file:

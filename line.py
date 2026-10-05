@@ -1,4 +1,4 @@
-# line.py v0.6.0
+# line.py v0.6.1
 
 import analysis
 import habo
@@ -61,11 +61,17 @@ else:
 y_daylio=[]
 y_habo=[]
 
+last_perfect_day=""
+perfect_days_count = 0
+
 daylio_data=daylio.load_data(DAYLIO_FILENAME)
 
 for _ in tqdm(range(num_days)):
     y_daylio.append(daylio.get_mood_for_date_preloaded(date.strftime("%Y-%m-%d"),daylio_data))
     y_habo.append(habo.get_completion_for_day(date.strftime("%Y-%m-%d"),HABO_FILENAME))
+    if(y_habo[-1] == 1):
+        last_perfect_day = date.strftime("%Y-%m-%d")
+        perfect_days_count+=1
     date+=timedelta(days=1)
 
 print("Generating line plot...")
@@ -76,7 +82,7 @@ analysis.rolling_average(y_habo)
 x = np.arange(0, len(y_daylio), 1)
 
 fig,daylio_axis=plt.subplots()
-daylio_axis.set_xticks([x[0],x[len(x)-1]],labels=[start_date,end_date])
+daylio_axis.set_xticks([x[0],x[int(len(x)/2)],x[-1]],labels=[start_date,(datetime.strptime(start_date, "%Y-%m-%d")+timedelta(days=int(num_days/2))).strftime("%Y-%m-%d"),end_date])
 daylio_axis.set_xlabel("Date")
 
 if(plot_daylio):
@@ -91,6 +97,8 @@ if(plot_habo):
     else:
         habo_line = daylio_axis.plot(x,y_habo,label="Habo",color="orange")
         daylio_axis.set_ylabel("Habit Completion")
+    print(f"Total of {perfect_days_count} perfect Habo days. Last one was on {last_perfect_day}.")
+
 
 if(plot_habo and plot_daylio):
     fig.legend(bbox_to_anchor=(.6,.3),draggable=True)
