@@ -19,6 +19,10 @@ Example: `python3 line.py 2024-01-01 2024-12-31 --daylio`.
 
 `mood_cloud.py` generates a word cloud for each Daylio mood
 
+`habo_monthly_completion.py` generates a line plot of monthly habit completion for all habits
+
+`daylio_tags_analysis.py` generates statistics of the effects of the presence of different Daylio tags
+
 > [!NOTE]
 > The format of Habo's output .json changed sometime in August / September 2025 in version 3.0.0/3.0.1. The current version supports the latest format. To analyze older Habo exports, use the programs as they were following the first commit: [here](https://github.com/JasonEl1/daylio-habo-stats/tree/42e3ff53c4eb8da3e83bdf5e5a14b27114ef889f)
 

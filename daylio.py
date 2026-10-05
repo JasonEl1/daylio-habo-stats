@@ -1,4 +1,4 @@
-# daylio.py v0.3.2
+# daylio.py v0.3.3
 
 import os
 import csv
@@ -53,6 +53,12 @@ def get_mood_for_date_preloaded(date,data):
 
 def get_note_for_date_preloaded(date,data):
     return str(data[data["full_date"]==date]["note"].iloc[0])
+
+def get_tags_for_date_preloaded(date,data):
+    try:
+        return data[data["full_date"]==date]["activities"].iloc[0].split(" | ")
+    except AttributeError:
+        return []
 
 def get_first_last_dates(filename):
     with open(filename, 'r') as file:
