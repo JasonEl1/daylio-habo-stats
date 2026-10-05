@@ -1,11 +1,10 @@
-# habit_effects.py v0.2.0
+# habit_effects.py v0.3.0
 
 import habo
 import daylio
 import analysis
 from datetime import datetime, timedelta
 import sys
-from tqdm import tqdm
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -49,19 +48,24 @@ else:
 
 
 daylio_data=daylio.load_data(DAYLIO_FILENAME)
+habo_data = habo.load_data(HABO_FILENAME)
 data={}
 
 print(f"Analyzing {len(habo.get_habit_ids(HABO_FILENAME))} habits from {start_date} to {end_date}...")
 
+habit_counter = 0
+num_habits = habo.get_num_habits(HABO_FILENAME)
+
 for habit_id in habo.get_habit_ids(HABO_FILENAME):
+    print(f"Analyzing habit {habit_counter} of {num_habits}...")
     date=datetime.strptime(start_date, "%Y-%m-%d")
     completed_total=0
     num_completed=0
     failed_total=0
     num_failed=0
-    for _ in tqdm(range(num_days)):
-        mood=daylio.get_mood_for_date_preloaded(date.strftime("%Y-%m-%d"),daylio_data)
-        if(habo.get_habit_for_day(date,HABO_FILENAME,habit_id)):
+    for _ in range(num_days):
+        mood=daylio.get_mood_for_date(date.strftime("%Y-%m-%d"),daylio_data)
+        if(habo.get_habit_for_day(date,HABO_FILENAME,habit_id,habo_data)):
             completed_total+=mood
             num_completed+=1
         else:
@@ -76,6 +80,8 @@ for habit_id in habo.get_habit_ids(HABO_FILENAME):
         failed_total=0
         num_failed=1
     data[habit_id]=[round((completed_total/num_completed),2),round((failed_total/num_failed),2)]
+
+    habit_counter+=1
 
 end_time=datetime.now()
 print()

@@ -1,4 +1,4 @@
-# analysis.py v0.3
+# analysis.py v0.3.0
 
 import habo
 import daylio

@@ -1,17 +1,15 @@
-# indv_habit.py v0.0.2
+# indv_habit.py v0.2.0
 
 import habo
 from datetime import datetime, timedelta
 import sys
-from tqdm import tqdm
 import analysis
 import numpy as np
 import matplotlib.pyplot as plt
 
 HABO_FILENAME=habo.get_filename()
 
-print("Analyzing data...")
-start_time=datetime.now()
+habo_data = habo.load_data(HABO_FILENAME)
 
 data={}
 
@@ -31,6 +29,9 @@ while int(chosen_habit_id) not in habit_ids:
     print("Invalid habit ID, try again.")
     chosen_habit_id = input("Which habit to analyze? : ")
 
+print("Analyzing data...")
+start_time=datetime.now()
+
 start_end_dates = habo.get_first_last_dates_for_habit(HABO_FILENAME,chosen_habit_id)
 num_days = (datetime.strptime(start_end_dates[1],"%Y-%m-%d")-datetime.strptime(start_end_dates[0],"%Y-%m-%d")).days+1
 
@@ -38,9 +39,12 @@ y_data = []
 
 date = datetime.strptime(start_end_dates[0],"%Y-%m-%d")
 
-for _ in tqdm(range(num_days)):
-    y_data.append(habo.get_habit_for_day(date,HABO_FILENAME,chosen_habit_id))
+for _ in range(num_days):
+    y_data.append(habo.get_habit_for_day(date,HABO_FILENAME,chosen_habit_id,habo_data))
     date+=timedelta(days=1)
+
+end_time=datetime.now()
+print(f"Done in {round((end_time-start_time).total_seconds(),2)} seconds")
 
 print("Generating line plot...")
 
@@ -53,8 +57,4 @@ plt.xticks([x[0],x[len(x)-1]],labels=[start_end_dates[0],start_end_dates[1]])
 plt.xticks([x[0],x[int(len(x)/2)],x[-1]],labels=[start_end_dates[0],(datetime.strptime(start_end_dates[0], "%Y-%m-%d")+timedelta(days=int(num_days/2))).strftime("%Y-%m-%d"),start_end_dates[1]])
 plt.xlabel("Date")
 plt.ylabel("Habit completion (rolling avg.)")
-
 plt.show()
-
-end_time=datetime.now()
-print(f"Done in {round((end_time-start_time).total_seconds(),2)} seconds")

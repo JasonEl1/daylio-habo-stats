@@ -1,4 +1,4 @@
-# scatter.py v0.4.0
+# scatter.py v0.5.0
 
 import analysis
 import habo
@@ -8,7 +8,6 @@ import sys
 import matplotlib.pyplot as plt
 from matplotlib.colors import ListedColormap
 import numpy as np
-from tqdm import tqdm
 
 HABO_FILENAME=habo.get_filename()
 DAYLIO_FILENAME=daylio.get_filename()
@@ -52,11 +51,12 @@ else:
 data_x=[]
 data_y=[]
 
-daylio_data=daylio.load_data(DAYLIO_FILENAME)
+daylio_data = daylio.load_data(DAYLIO_FILENAME)
+habo_data = habo.load_data(HABO_FILENAME)
 
-for _ in tqdm(range(num_days)):
-    data_x.append(daylio.get_mood_for_date_preloaded(date.strftime("%Y-%m-%d"),daylio_data))
-    data_y.append(habo.get_completion_for_day(date.strftime("%Y-%m-%d"),HABO_FILENAME))
+for _ in range(num_days):
+    data_x.append(daylio.get_mood_for_date(date.strftime("%Y-%m-%d"),daylio_data))
+    data_y.append(habo.get_completion_for_day(date.strftime("%Y-%m-%d"),HABO_FILENAME,habo_data))
     date+=timedelta(days=1)
 
 print("Generating scatter plot...")

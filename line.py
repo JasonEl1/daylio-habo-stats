@@ -1,4 +1,4 @@
-# line.py v0.6.1
+# line.py v0.7.0
 
 import analysis
 import habo
@@ -8,7 +8,6 @@ import numpy as np
 import math
 import sys
 import matplotlib.pyplot as plt
-from tqdm import tqdm
 import pandas as pd
 
 HABO_FILENAME=habo.get_filename()
@@ -64,11 +63,12 @@ y_habo=[]
 last_perfect_day=""
 perfect_days_count = 0
 
-daylio_data=daylio.load_data(DAYLIO_FILENAME)
+daylio_data = daylio.load_data(DAYLIO_FILENAME)
+habo_data = habo.load_data(HABO_FILENAME)
 
-for _ in tqdm(range(num_days)):
-    y_daylio.append(daylio.get_mood_for_date_preloaded(date.strftime("%Y-%m-%d"),daylio_data))
-    y_habo.append(habo.get_completion_for_day(date.strftime("%Y-%m-%d"),HABO_FILENAME))
+for _ in range(num_days):
+    y_daylio.append(daylio.get_mood_for_date(date.strftime("%Y-%m-%d"),daylio_data))
+    y_habo.append(habo.get_completion_for_day(date.strftime("%Y-%m-%d"),HABO_FILENAME,habo_data))
     if(y_habo[-1] == 1):
         last_perfect_day = date.strftime("%Y-%m-%d")
         perfect_days_count+=1

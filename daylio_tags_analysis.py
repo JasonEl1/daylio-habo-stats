@@ -1,8 +1,7 @@
-# daylio_tags_analysis.py v0.0.1
+# daylio_tags_analysis.py v0.1.0
 
 import daylio
 from datetime import datetime,timedelta
-from tqdm import tqdm
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -19,9 +18,9 @@ date=datetime.strptime(first_date, "%Y-%m-%d")
 
 tags_data = {}
 
-print("Pass 1 of 2:")
-for _ in tqdm(range(num_days)):
-    tags = daylio.get_tags_for_date_preloaded(date.strftime("%Y-%m-%d"),daylio_data)
+print("Pass 1 of 2...")
+for _ in range(num_days):
+    tags = daylio.get_tags_for_date(date.strftime("%Y-%m-%d"),daylio_data)
     for tag in tags:
         if(tag not in tags_data.keys()):
             tags_data[tag] = [0,0,0,0]
@@ -29,10 +28,10 @@ for _ in tqdm(range(num_days)):
 
 date=datetime.strptime(first_date, "%Y-%m-%d")
 
-print("Pass 2 of 2:")
-for _ in tqdm(range(num_days)):
-    tags = daylio.get_tags_for_date_preloaded(date.strftime("%Y-%m-%d"),daylio_data)
-    mood = daylio.get_mood_for_date_preloaded(date.strftime("%Y-%m-%d"),daylio_data)
+print("Pass 2 of 2...")
+for _ in range(num_days):
+    tags = daylio.get_tags_for_date(date.strftime("%Y-%m-%d"),daylio_data)
+    mood = daylio.get_mood_for_date(date.strftime("%Y-%m-%d"),daylio_data)
     for tag in tags_data.keys():
         if tag in tags: # tag from dict was present in the day's tags
             tags_data[tag][0] += mood

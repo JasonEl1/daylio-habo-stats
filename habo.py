@@ -1,4 +1,4 @@
-# habo.py v0.3.0
+# habo.py v0.4.0
 
 import os
 import json
@@ -28,6 +28,12 @@ def get_filename():
                 print("Invalid input, try again.")
 
         return possible_filenames[choice]
+
+def load_data(filename):
+    with open(filename, 'r') as file:
+        data = json.load(file)
+        file.close()
+    return data
 
 def get_num_habits(filename):
     with open(filename, 'r') as file:
@@ -71,29 +77,23 @@ def get_habit_name_from_id(filename,habit_id):
 
         return data["habits"][index]["title"]
 
+def get_habit_for_day(date,filename,habit_id,data):
+    index=0
+    for habit_index in range(len(data["habits"])):
+        index=habit_index
 
-def get_habit_for_day(date,filename,habit_id):
-    with open(filename, 'r') as file:
-        data = json.load(file)
+        if(data["habits"][habit_index]["id"]==habit_id):
+            break
+    else:
+        return -1
 
-        index=0
-        for habit_index in range(len(data["habits"])):
-            index=habit_index
-
-            if(data["habits"][habit_index]["id"]==habit_id):
-                break
-        else:
-            return -1
-
-        file.close()
-
-        try:
-            completed = (data["habits"][index]["events"])[f"{date.strftime("%Y-%m-%d")} 12:00:00.000Z"][0]
-        except:
-            completed = "DayType.skip"
-        if(completed=="DayType.check" or completed =="DayType.skip"):
-            return 1
-        return 0
+    try:
+        completed = (data["habits"][index]["events"])[f"{date.strftime("%Y-%m-%d")} 12:00:00.000Z"][0]
+    except:
+        completed = "DayType.skip"
+    if(completed=="DayType.check" or completed =="DayType.skip"):
+        return 1
+    return 0
 
 def get_habit_ids(filename):
     with open(filename, 'r') as file:
@@ -107,21 +107,17 @@ def get_habit_ids(filename):
 
     return ids
 
-def get_completion_for_day(date,filename):
-    with open(filename, 'r') as file:
-        data = json.load(file)
-        num_habits=len(data["habits"])
-        num_completed=0
-        for i in range(num_habits):
-            try:
-                completed = (data["habits"][i]["events"])[f"{date} 12:00:00.000Z"][0]
-            except Exception as e:
-                completed="DayType.fail"
-                num_habits-=1
-            if(completed=="DayType.check" or completed =="DayType.skip"):
-                num_completed+=1
-
-        file.close()
+def get_completion_for_day(date,filename,data):
+    num_habits=len(data["habits"])
+    num_completed=0
+    for i in range(num_habits):
+        try:
+            completed = (data["habits"][i]["events"])[f"{date} 12:00:00.000Z"][0]
+        except Exception as e:
+            completed="DayType.fail"
+            num_habits-=1
+        if(completed=="DayType.check" or completed =="DayType.skip"):
+            num_completed+=1
 
     if(num_habits!=0):
         return num_completed/num_habits

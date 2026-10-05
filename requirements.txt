@@ -42,7 +42,6 @@ spacy-legacy==3.0.12
 spacy-loggers==1.0.5
 srsly==2.5.2
 thinc==8.3.10
-tqdm==4.67.1
 typer==0.24.1
 typer-slim==0.24.0
 typing-inspection==0.4.2

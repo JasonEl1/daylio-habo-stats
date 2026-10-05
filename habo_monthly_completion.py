@@ -1,8 +1,7 @@
-# habo_monthly_completion.py v0.0.1
+# habo_monthly_completion.py v0.1.0
 
 import habo
 from datetime import datetime, timedelta
-from tqdm import tqdm
 import matplotlib.pyplot as plt
 
 MONTH_NUM_TO_DAY = [
@@ -22,6 +21,7 @@ MONTH_NUM_TO_DAY = [
 ]
 
 HABO_FILENAME = habo.get_filename()
+habo_data = habo.load_data(HABO_FILENAME)
 first_last_dates = habo.get_first_last_dates(HABO_FILENAME)
 
 num_days = (datetime.strptime(first_last_dates[1], "%Y-%m-%d") - datetime.strptime(first_last_dates[0], "%Y-%m-%d")).days
@@ -41,7 +41,7 @@ month_total = 0
 
 year_compensation = 0
 
-for _ in tqdm(range(num_days)):
+for _ in range(num_days):
     month=date.month
     if(month != prev_month):
         if(prev_month == 12):
@@ -53,7 +53,7 @@ for _ in tqdm(range(num_days)):
         month_total = 0
 
     month_total+=1
-    month_completed += habo.get_completion_for_day(date.strftime("%Y-%m-%d"),HABO_FILENAME)
+    month_completed += habo.get_completion_for_day(date.strftime("%Y-%m-%d"),HABO_FILENAME,habo_data)
     date+=timedelta(days=1)
 
 print("Generating line plot...")
@@ -71,7 +71,7 @@ plt.xticks([x[0],x[int(len(x)/2)],x[-1]])
 end_time=datetime.now()
 print(f"Done in {round((end_time-start_time).total_seconds(),2)} seconds")
 
-print("Habit completion by month:")
+print("\nHabit completion by month:")
 print("--------------------------")
 
 sorted_completions = sorted(month_completions.items(),key = lambda x:x[1],reverse=True)

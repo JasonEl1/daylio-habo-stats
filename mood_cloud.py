@@ -1,9 +1,8 @@
-# mood_cloud.py v0.0.1
+# mood_cloud.py v0.1.0
 
 from wordcloud import WordCloud
 import matplotlib.pyplot as plt
 import daylio
-from tqdm import tqdm
 from datetime import datetime, timedelta
 import spacy
 
@@ -23,8 +22,8 @@ allowed_tags = ["ADJ"]
 
 while(date != end_date):
     print(f"Analyzing {str(date).split(" ")[0]}")
-    mood = daylio.get_mood_for_date_preloaded(date.strftime("%Y-%m-%d"),data)
-    note = daylio.get_note_for_date_preloaded(date.strftime("%Y-%m-%d"),data)
+    mood = daylio.get_mood_for_date(date.strftime("%Y-%m-%d"),data)
+    note = daylio.get_note_for_date(date.strftime("%Y-%m-%d"),data)
     doc = nlp(note)
     filtered_words = [token.text for token in doc if token.pos_ in allowed_tags]
     strings[mood-1] += " ".join(filtered_words)

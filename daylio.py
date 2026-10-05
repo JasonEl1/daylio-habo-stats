@@ -1,4 +1,4 @@
-# daylio.py v0.3.3
+# daylio.py v0.4.0
 
 import os
 import csv
@@ -37,24 +37,13 @@ DAYLIO_MOOD_COLOURS = ["red", "orange","gold","limegreen","mediumseagreen"]
 def load_data(filename):
     return pd.read_csv(filename)
 
-def get_mood_for_date(date,filename):
-    with open(filename, 'r') as file:
-        reader = csv.reader(file)
-        for row in reader:
-            if row[0]==date:
-                result=int(DAYLIO_MOOD_TO_INT[row[4]])
-                file.close()
-                return result
-        file.close()
-        return -1
-
-def get_mood_for_date_preloaded(date,data):
+def get_mood_for_date(date,data):
     return int(DAYLIO_MOOD_TO_INT[data[data["full_date"]==date]["mood"].iloc[0]])
 
-def get_note_for_date_preloaded(date,data):
+def get_note_for_date(date,data):
     return str(data[data["full_date"]==date]["note"].iloc[0])
 
-def get_tags_for_date_preloaded(date,data):
+def get_tags_for_date(date,data):
     try:
         return data[data["full_date"]==date]["activities"].iloc[0].split(" | ")
     except AttributeError:
